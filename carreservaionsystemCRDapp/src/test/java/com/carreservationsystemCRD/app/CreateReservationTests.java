@@ -9,9 +9,7 @@ import java.util.List;
 
 public class CreateReservationTests {
 
-    Receptionist receptionist = new Receptionist();
     VehicleInventory inventory = new VehicleInventory();
-    Member member = new Member();
     Car car = new Car("GJ6","car1license6",5,"suv","volkswagen",2018,80,CarType.COMPACT);
 
     Instant startDate = new Instant("2019-10-10");
@@ -49,7 +47,7 @@ public class CreateReservationTests {
     public void verifyBookingAddedToReservations(){
         int size = inventory.allReservations.size();
         inventory.createNewReservation(new Instant("2019-12-1"), new Instant("2019-12-3"));
-        VehicleInventory.printReservations(inventory.allReservations);
+        //VehicleInventory.printReservations(inventory.allReservations);
         Assert.assertEquals(inventory.allReservations.size(), size+1);
     }
 
@@ -57,7 +55,16 @@ public class CreateReservationTests {
     public void verifyBookingAddedToReservationsDaysParameter(){
         int size = inventory.allReservations.size();
         inventory.createNewReservation(new Instant("2019-12-1"), 10);
-        VehicleInventory.printReservations(inventory.allReservations);
+        //VehicleInventory.printReservations(inventory.allReservations);
         Assert.assertEquals(inventory.allReservations.size(), size+1);
+    }
+
+    @Test
+    public void verifyReservationDeleted(){
+        VehicleReservation reservation = new VehicleReservation("GJ5",new Instant("2019-12-12"),new Instant("2019-12-12"));
+        inventory.allReservations.add(reservation);
+        Assert.assertTrue(inventory.allReservations.contains(reservation));
+        inventory.cancelReservation(reservation);
+        Assert.assertFalse(inventory.allReservations.contains(reservation));
     }
 }
